@@ -35,7 +35,7 @@
     position:fixed; inset:0; display:none; overflow-y:auto;
     padding: clamp(28px, 6vw, 72px);
     line-height:1.9; font-size:clamp(18px, 2.2vw, 22px);
-    background: url('fondo.jpg') center/cover no-repeat;
+    background: url('fondo-carta.jpg') center/cover no-repeat;
     color:#3e2723;
     box-shadow: inset 0 0 80px rgba(0,0,0,.25), 0 10px 40px rgba(0,0,0,.35);
   }
@@ -85,49 +85,49 @@
     <!-- Página 1 -->
     <section class="page active">
       <p>A veces me quedo sin palabras cuando pienso en lo mucho que significas para mí, intento buscar la manera de describir lo que siento, pero ninguna palabra parece alcanzar, y aun así, dentro de mí hay una verdad imposible de ocultar: eres lo mejor que me ha pasado en la vida.</p>
-      <img src="foto1.jpg" class="foto">
+      <img src="foto1.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
     <!-- Página 2 -->
     <section class="page">
       <p>No necesito adornar lo que siento, porque lo que llevo dentro es real, es fuerte y es eterno, y aunque me falten las palabras, lo que siento por ti se explica solo. Eres la persona que cambió mi manera de ver el mundo, la que le dio sentido a mis días y calma a mis noches.</p>
-      <img src="foto2.jpg" class="foto">
+      <img src="foto2.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
     <!-- Página 3 -->
     <section class="page">
       <p>Desde que llegaste todo lo que parecía común se volvió extraordinario, porque lo comparto contigo. Cada detalle tuyo me enamora: tu forma de sonreír, tu manera de hablar. Eres la luz que ilumina mi vida, y en ti encontré lo que nunca pensé que existiera: un amor sincero, único y profundo.</p>
-      <img src="foto3.jpg" class="foto">
+      <img src="foto3.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
     <!-- Página 4 -->
     <section class="page">
       <p>No necesito a nadie más, porque contigo lo tengo todo. Eres mi única prioridad, lo que más deseo y lo más valioso que tengo en esta vida. Mi corazón late con fuerza solo por ti, y cada día me despierto con la certeza de que quiero ser mejor para ti, porque te lo mereces todo.</p>
-      <img src="foto4.jpg" class="foto">
+      <img src="foto4.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
     <!-- Página 5 -->
     <section class="page">
       <p>A tu lado he aprendido lo que es el amor de verdad, ese que no se mide en momentos perfectos, sino en la certeza de que incluso en lo difícil lo único que quiero es seguir contigo. Eres mi presente, mi futuro y mi más grande sueño. No me imagino un camino donde no estés tú.</p>
-      <img src="foto5.jpg" class="foto">
+      <img src="foto5.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
     <!-- Página 6 -->
     <section class="page">
       <p>Simplemente eres lo más bonito que la vida me ha regalado. Quiero que sepas que te amo con todo lo que soy, que cada pensamiento mío termina en ti, que cada ilusión y cada plan lleva tu nombre. No hay distancia, ni tiempo, ni nada capaz de hacerme dejar de sentir lo que siento.</p>
-      <img src="foto6.jpg" class="foto">
+      <img src="foto6.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
     <!-- Página 7 -->
     <section class="page">
       <p>Porque lo que siento por ti es amor de verdad, de ese que no se apaga, de ese que crece cada día, de ese que está hecho para durar siempre. Y hoy, sin miedo ni dudas, quiero decirte que eres la mujer de mi vida, mi único deseo, mi refugio y mi razón. Siempre voy a elegirte a ti.</p>
-      <img src="foto7.jpg" class="foto">
+      <img src="foto7.png" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
 
@@ -137,7 +137,7 @@
         Por eso, después de abrirte mi corazón, de mostrarte lo que realmente siento y de entregarte estas palabras que nacen de lo más profundo de mí, quiero pedirte algo que llevo tiempo guardando con ilusión:<br><br>
         ¿Me regalas el honor de ser tu novio?
       </p>
-      <img src="foto8.jpg" class="foto">
+      <img src="foto8.png" class="foto">
       <div class="controls">
         <button class="btn choice">Sí ❤️</button>
         <button class="btn choice">¡Sí, claro que sí! 💍</button>
@@ -167,7 +167,7 @@
     }, 950);
   });
 
-  letter.addEventList ener('click', (e)=>{
+  letter.addEventListener('click', (e)=>{
     if(e.target.classList.contains('next')){
       pages[idx].classList.remove('active');
       idx = Math.min(idx+1, pages.length-1);
