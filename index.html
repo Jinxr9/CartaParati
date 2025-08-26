@@ -68,6 +68,15 @@
     from { transform: translateY(0) scale(1); opacity:1; }
     to { transform: translateY(-100vh) scale(1.8); opacity:0; }
   }
+
+  .loveText {
+    position: absolute;
+    font-size: 1.5em;
+    color: #ff4d6d;
+    font-weight: bold;
+    animation: floatUp 3s forwards;
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
@@ -82,56 +91,42 @@
   <main class="letter" id="letter">
     <h2>Mi amor 💖</h2>
 
-    <!-- Página 1 -->
+    <!-- CONFESIÓN COMPLETA (8 páginas con fotos) -->
     <section class="page active">
       <p>A veces me quedo sin palabras cuando pienso en lo mucho que significas para mí, intento buscar la manera de describir lo que siento, pero ninguna palabra parece alcanzar, y aun así, dentro de mí hay una verdad imposible de ocultar: eres lo mejor que me ha pasado en la vida.</p>
       <img src="foto1.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 2 -->
     <section class="page">
       <p>No necesito adornar lo que siento, porque lo que llevo dentro es real, es fuerte y es eterno, y aunque me falten las palabras, lo que siento por ti se explica solo. Eres la persona que cambió mi manera de ver el mundo, la que le dio sentido a mis días y calma a mis noches.</p>
       <img src="foto2.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 3 -->
     <section class="page">
       <p>Desde que llegaste todo lo que parecía común se volvió extraordinario, porque lo comparto contigo. Cada detalle tuyo me enamora: tu forma de sonreír, tu manera de hablar. Eres la luz que ilumina mi vida, y en ti encontré lo que nunca pensé que existiera: un amor sincero, único y profundo.</p>
       <img src="foto3.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 4 -->
     <section class="page">
       <p>No necesito a nadie más, porque contigo lo tengo todo. Eres mi única prioridad, lo que más deseo y lo más valioso que tengo en esta vida. Mi corazón late con fuerza solo por ti, y cada día me despierto con la certeza de que quiero ser mejor para ti, porque te lo mereces todo.</p>
       <img src="foto4.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 5 -->
     <section class="page">
       <p>A tu lado he aprendido lo que es el amor de verdad, ese que no se mide en momentos perfectos, sino en la certeza de que incluso en lo difícil lo único que quiero es seguir contigo. Eres mi presente, mi futuro y mi más grande sueño. No me imagino un camino donde no estés tú.</p>
       <img src="foto5.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 6 -->
     <section class="page">
       <p>Simplemente eres lo más bonito que la vida me ha regalado. Quiero que sepas que te amo con todo lo que soy, que cada pensamiento mío termina en ti, que cada ilusión y cada plan lleva tu nombre. No hay distancia, ni tiempo, ni nada capaz de hacerme dejar de sentir lo que siento.</p>
       <img src="foto6.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 7 -->
     <section class="page">
       <p>Porque lo que siento por ti es amor de verdad, de ese que no se apaga, de ese que crece cada día, de ese que está hecho para durar siempre. Y hoy, sin miedo ni dudas, quiero decirte que eres la mujer de mi vida, mi único deseo, mi refugio y mi razón. Siempre voy a elegirte a ti.</p>
       <img src="foto7.jpg" class="foto">
       <div class="controls"><button class="btn next">Siguiente ➝</button></div>
     </section>
-
-    <!-- Página 8 (final) -->
     <section class="page">
       <p style="text-align:center; font-size:1.25em; color:#6d1a1a; font-weight:bold;">
         Por eso, después de abrirte mi corazón, de mostrarte lo que realmente siento y de entregarte estas palabras que nacen de lo más profundo de mí, quiero pedirte algo que llevo tiempo guardando con ilusión:<br><br>
@@ -149,6 +144,12 @@
   <audio id="musicInicio" src="inicio.mp3" loop></audio>
   <audio id="musicFinal" src="final.mp3"></audio>
 
+<!-- GALERÍA FINAL -->
+<div id="gallery" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; justify-content:center; align-items:center; flex-direction:column;">
+  <img id="galleryImage" src="" alt="Imagen romántica" style="max-width:90%; max-height:80%; border-radius:20px; box-shadow:0 0 30px rgba(255,255,255,0.5); animation: fadeIn 1s;">
+  <button id="nextBtn" style="margin-top:20px; padding:12px 24px; background:#ff4d6d; color:#fff; font-size:18px; border:none; border-radius:12px; cursor:pointer;">Siguiente</button>
+</div>
+
 <script>
   const envelope = document.getElementById('envelope');
   const letter   = document.getElementById('letter');
@@ -163,7 +164,7 @@
       envelope.style.display='none';
       letter.style.display='block';
       letter.scrollTo({top:0});
-      musicInicio.play(); // arranca la música de inicio
+      musicInicio.play();
     }, 950);
   });
 
@@ -175,23 +176,59 @@
       letter.scrollTo({top:0, behavior:'smooth'});
     }
     if(e.target.classList.contains('choice')){
-      // cortar música inicial y arrancar final
-      musicInicio.pause();
-      musicInicio.currentTime = 0;
+      musicInicio.pause(); musicInicio.currentTime = 0;
       musicFinal.play();
-      lanzarCorazones();
+      setTimeout(()=>startGallery(), 500);
     }
   });
 
-  function lanzarCorazones(){
-    setInterval(()=>{
+  // Galería de 4 imágenes (foto1, foto2, foto10, foto11)
+  const images = ["foto1.jpg","foto2.jpg","foto10.jpg","foto11.jpg"];
+  let currentIndex = 0;
+  const gallery = document.getElementById("gallery");
+  const galleryImage = document.getElementById("galleryImage");
+  const nextBtn = document.getElementById("nextBtn");
+
+  function startGallery() {
+    currentIndex = 0;
+    gallery.style.display = "flex";
+    galleryImage.src = images[currentIndex];
+  }
+
+  nextBtn.addEventListener("click", () => {
+    currentIndex++;
+    if (currentIndex < images.length) {
+      galleryImage.src = images[currentIndex];
+      galleryImage.style.animation = "none";
+      setTimeout(() => galleryImage.style.animation = "fadeIn 1s", 10);
+
+      // Solo activar clicks en la última imagen (foto11.jpg)
+      if(images[currentIndex] === "foto11.jpg"){
+        gallery.addEventListener("click", showLoveText);
+      }
+    } else {
+      gallery.style.display = "none";
+    }
+  });
+
+  function showLoveText(e){
+    if(images[currentIndex] === "foto11.jpg"){
+      const love = document.createElement("div");
+      love.className = "loveText";
+      love.innerText = "Te amo Noemi ❤️";
+      love.style.left = (e.clientX-40)+"px";
+      love.style.top = (e.clientY-20)+"px";
+      gallery.appendChild(love);
+      setTimeout(()=>love.remove(), 3000);
+
       const heart = document.createElement("div");
       heart.className = "heart";
       heart.innerText = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      document.body.appendChild(heart);
+      heart.style.left = e.clientX + "px";
+      heart.style.top = e.clientY + "px";
+      gallery.appendChild(heart);
       setTimeout(()=>heart.remove(),4000);
-    }, 400);
+    }
   }
 </script>
 </body>
