@@ -4,6 +4,11 @@
 <meta charset="UTF-8" />
 <title>Carta para ti 💌</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Precarga de audio (usa los nombres exactos de tus archivos) -->
+<link rel="preload" as="audio" href="inicio.mp3">
+<link rel="preload" as="audio" href="Final.mp3">
+
 <style>
   body{
     margin:0;
@@ -67,6 +72,15 @@
     box-shadow:0 6px 14px rgba(0,0,0,.25);
   }
   .btn:hover{ background:#a31212; }
+
+  /* Botón de música */
+  .musicBtn{
+    position:fixed; top:14px; right:14px; z-index:50;
+    display:none; align-items:center; justify-content:center;
+    width:40px; height:40px; border-radius:10px; border:none; cursor:pointer;
+    background:#8b0000; color:#fff; font-size:20px;
+    box-shadow:0 6px 14px rgba(0,0,0,.25);
+  }
 
   @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
 </style>
@@ -151,29 +165,59 @@
     </section>
   </main>
 
+  <!-- Elementos de audio y botón de música -->
+  <audio id="songIntro" src="inicio.mp3" preload="auto" loop></audio>
+  <audio id="songFinal" src="Final.mp3" preload="auto"></audio>
+  <button class="musicBtn" id="musicBtn" aria-label="Música">🔊</button>
+
 <script>
   const envelope = document.getElementById('envelope');
   const letter   = document.getElementById('letter');
   const pages    = [...document.querySelectorAll('.page')];
+  const intro    = document.getElementById('songIntro');
+  const outro    = document.getElementById('songFinal');
+  const musicBtn = document.getElementById('musicBtn');
   let idx = 0;
 
-  // Abrir sobre -> mostrar carta
+  intro.volume = 0.6;
+  outro.volume = 0.7;
+
+  // Abrir sobre -> mostrar carta + iniciar música
   envelope.addEventListener('click', ()=>{
     envelope.classList.add('open');
     setTimeout(()=>{
       envelope.style.display='none';
       letter.style.display='block';
       letter.scrollTo({top:0});
+      // Autoplay permitido por el clic del usuario
+      intro.play().catch(()=>{});
+      musicBtn.style.display='inline-flex';
     }, 950);
   });
 
-  // Navegación
+  // Navegación por páginas
   letter.addEventListener('click', (e)=>{
     if(!e.target.classList.contains('next')) return;
     pages[idx].classList.remove('active');
     idx = Math.min(idx+1, pages.length-1);
     pages[idx].classList.add('active');
     letter.scrollTo({top:0, behavior:'smooth'});
+
+    // Si llegamos a la última página, cambia a la música final
+    if (idx === pages.length-1) {
+      if (!outro.paused) return;
+      try { intro.pause(); } catch(e){}
+      outro.currentTime = 0;
+      outro.play().catch(()=>{});
+    }
+  });
+
+  // Botón para silenciar/activar música
+  let muted = false;
+  musicBtn.addEventListener('click', ()=>{
+    muted = !muted;
+    intro.muted = outro.muted = muted;
+    musicBtn.textContent = muted ? '🔇' : '🔊';
   });
 </script>
 </body>
