@@ -167,7 +167,7 @@
     }, 950);
   });
 
-  letter.addEventListener('click', (e)=>{
+  letter.addEventList ener('click', (e)=>{
     if(e.target.classList.contains('next')){
       pages[idx].classList.remove('active');
       idx = Math.min(idx+1, pages.length-1);
